@@ -20,9 +20,9 @@ export default {
     //   ],
 		myServices: [],
 		myFilterServices: [],
-		rooms: this.$route.query.rooms || null,
-		beds: this.$route.query.beds || null,
-		toilets: this.$route.query.toilets || null,
+		rooms: this.$route.query.rooms || 0,
+		beds: this.$route.query.beds || 0,
+		toilets: this.$route.query.toilets || 0,
     };
 },
 mounted() {
@@ -451,7 +451,7 @@ methods: {
 		
 		</div>
 		
-		<div v-else-if=" filteredApartments == [] && rooms != null || beds != null || toilets != null || services != null">
+		<div v-else-if=" filteredApartments == [] && myFilterServices.length || rooms != 0 || beds != 0 || toilets != 0 ">
 			
 			<div class="container">
 				<h3>Nessun Appartamento trovato</h3>
