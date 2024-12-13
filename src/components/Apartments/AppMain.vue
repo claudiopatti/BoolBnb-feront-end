@@ -158,15 +158,19 @@ methods: {
 					(lat && lon ? apartment.distance <= this.radius : true) &&
 					(this.rooms === null || apartment.rooms >= this.rooms) &&
 					(this.beds === null || apartment.beds >= this.beds) &&
-					(this.toilets === null || apartment.toilets >= this.toilets);
-
-				const matchesServices =
-					this.myFilterServices.length === 0 || // Nessun filtro selezionato
+					(this.toilets === null || apartment.toilets >= this.toilets) &&
+					(this.myFilterServices.length === 0 || // Nessun filtro selezionato
 					this.myFilterServices.every((serviceId) =>
 						apartment.services.some((service) => service.id === serviceId)
-					);
+					));
 
-				return matchesBasicCriteria && matchesServices;
+				// const matchesServices =
+				// 	this.myFilterServices.length === 0 || // Nessun filtro selezionato
+				// 	this.myFilterServices.every((serviceId) =>
+				// 		apartment.services.some((service) => service.id === serviceId)
+				// 	);
+
+				return matchesBasicCriteria ;
 			});
 
 		// Ordina i risultati
@@ -179,6 +183,8 @@ methods: {
 				return a.distance - b.distance;
 			}
 		});
+		console.log(this.filteredApartments);
+		
 	},
 
 
@@ -286,6 +292,22 @@ methods: {
 
 			}
 		},
+		
+		resetFilter() {
+			this.myFilterServices = [],
+			this.radius = 0,
+			this.filteredApartments = [],
+			this.rooms = null,
+			this.beds = null,
+			this.toilets = null
+			this.myServices.forEach(servicez => {
+				if (servicez.checked === true) {
+					servicez.checked = false
+
+				}
+
+			});
+		}
 	}
   }
 </script>
@@ -346,6 +368,9 @@ methods: {
 			</div>
 			<div class="col-12 col-sm-12 col-lg-2  justify-self-end pe-0 mt-2">
 				<button type="submit" @click="search" class="btn btn-warning w-100">Cerca</button>
+			</div>
+			<div class="col-12 col-sm-12 col-lg-2  justify-self-end pe-0 mt-2">
+				<button type="submit" @click="resetFilter" class="btn btn-danger w-100">Reset Filtri</button>
 			</div>
 
 		</div>
@@ -426,62 +451,70 @@ methods: {
 		
 		</div>
 		
+		<div v-else-if=" filteredApartments == [] && rooms != null || beds != null || toilets != null || services != null">
+			
+			<div class="container">
+				<h3>Nessun Appartamento trovato</h3>
+			</div>
+
+		</div>
 
 		<div v-else-if="apartments.length && searchQuery == '' ">
 			
 			<div class="container">
 
-			<div class="row">
-				
-				<div  v-for="apartment in apartments" :key="apartment.id" class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3">
+				<div class="row">
+					
+					<div  v-for="apartment in apartments" :key="apartment.id" class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3">
 
-					<router-link :to="{ name: 'apartment-show' , params: { slug: apartment.slug }}" class="apartment-card-link text-dark">
-						<div class="my-card p-3">
-								<div class="text-center my-img-container mb-2">
-									<img :src=" apartment.full_image_url " class="img-fluid my-img mb-2" :alt=" apartment.title ">
-								</div>
-								<h4 class="fw-bold mb-1">
-									{{ apartment.title }} 
-								</h4>
-								<strong class="mb-1">
-									{{ apartment.address }} 
-								</strong>
-								<div class="d-flex align-items-center justify-content-start text-start mb-1">
-									<div>
-										<!-- <span class="me-2">Stanze </span> -->
-										<i class="fa-solid fa-door-closed my-icon me-2"></i>
-										<strong class="fs-5 me-3">{{ apartment.rooms }}</strong>
+						<router-link :to="{ name: 'apartment-show' , params: { slug: apartment.slug }}" class="apartment-card-link text-dark">
+							<div class="my-card p-3">
+									<div class="text-center my-img-container mb-2">
+										<img :src=" apartment.full_image_url " class="img-fluid my-img mb-2" :alt=" apartment.title ">
 									</div>
-									<div>
-										<!-- <span class="me-2">Letti </span> -->
-										<i class="fa-solid fa-bed my-icon me-2"></i>
-										<strong class="fs-5 me-3">{{ apartment.beds }}</strong>
+									<h4 class="fw-bold mb-1">
+										{{ apartment.title }} 
+									</h4>
+									<strong class="mb-1">
+										{{ apartment.address }} 
+									</strong>
+									<div class="d-flex align-items-center justify-content-start text-start mb-1">
+										<div>
+											<!-- <span class="me-2">Stanze </span> -->
+											<i class="fa-solid fa-door-closed my-icon me-2"></i>
+											<strong class="fs-5 me-3">{{ apartment.rooms }}</strong>
+										</div>
+										<div>
+											<!-- <span class="me-2">Letti </span> -->
+											<i class="fa-solid fa-bed my-icon me-2"></i>
+											<strong class="fs-5 me-3">{{ apartment.beds }}</strong>
+										</div>
+										<div>
+											<!-- <span class="me-2">Bagni </span> -->
+											<i class="fa-solid fa-toilet my-icon me-2"></i>
+											<strong class="fs-5 me-3">{{ apartment.toilets }}</strong>
+										</div>
 									</div>
-									<div>
-										<!-- <span class="me-2">Bagni </span> -->
-										<i class="fa-solid fa-toilet my-icon me-2"></i>
-										<strong class="fs-5 me-3">{{ apartment.toilets }}</strong>
+									<div class="text-start h-100">
+										<ul class="p-0 d-flex flex-wrap">
+											<li v-for="service, index in apartment.services" :key="index" class="fw-bold text-secondary me-3 p-0 my-lable">
+												{{ service.service_name }}
+											</li>
+										</ul>
 									</div>
-								</div>
-								<div class="text-start h-100">
-									<ul class="p-0 d-flex flex-wrap">
-										<li v-for="service, index in apartment.services" :key="index" class="fw-bold text-secondary me-3 p-0 my-lable">
-											{{ service.service_name }}
-										</li>
-									</ul>
-								</div>
-								
-						</div>
-					</router-link>
-				
-				
+									
+							</div>
+						</router-link>
+					
+					
+					</div>
+
 				</div>
 
 			</div>
 
-			</div>
-
 		</div>
+
 
 		
 
