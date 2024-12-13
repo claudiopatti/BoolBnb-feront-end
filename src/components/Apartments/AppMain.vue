@@ -297,9 +297,9 @@ methods: {
 			this.myFilterServices = [],
 			this.radius = 0,
 			this.filteredApartments = [],
-			this.rooms = null,
-			this.beds = null,
-			this.toilets = null
+			this.rooms = 0,
+			this.beds = 0,
+			this.toilets = 0
 			this.myServices.forEach(servicez => {
 				if (servicez.checked === true) {
 					servicez.checked = false
@@ -356,14 +356,14 @@ methods: {
 				<div class="col-12 col-sm-12 col-md-12  col-lg-4 justify-content-start align-items-center d-flex py-2">
 				
 					<label for="rooms" class=" me-2">Stanze</label>
-					<input type="number" class="form-control my-input me-2" name="rooms" min="0"  id="rooms" v-model="rooms">
+					<input type="number" class="form-control my-input me-2" name="rooms" id="rooms" v-model="rooms" min="0">
 				
 					<label for="beds" class="me-2">Letti</label>
-					<input type="number" class="form-control  my-input me-2" name="beds" id="beds" v-model="beds">
+					<input type="number" class="form-control  my-input me-2" name="beds" id="beds" v-model="beds" min="0">
 				
 				
 					<label for="toilets" class="me-2">Bagni</label>
-					<input type="number" class="form-control my-input me-2" name="toilets" id="toilets" v-model="toilets">
+					<input type="number" class="form-control my-input me-2" name="toilets" id="toilets" v-model="toilets" min="0">
 				
 			</div>
 			<div class="col-12 col-sm-12 col-lg-2  justify-self-end pe-0 mt-2">
