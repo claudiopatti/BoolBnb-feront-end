@@ -299,7 +299,8 @@ methods: {
 			this.filteredApartments = [],
 			this.rooms = 0,
 			this.beds = 0,
-			this.toilets = 0
+			this.toilets = 0,
+			this.searchQuery = "",
 			this.myServices.forEach(servicez => {
 				if (servicez.checked === true) {
 					servicez.checked = false
