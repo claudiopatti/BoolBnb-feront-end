@@ -357,18 +357,21 @@ methods: {
 				<div class="col-12 col-sm-12 col-md-12  col-lg-4 justify-content-start align-items-center d-flex py-2">
 				
 					<label for="rooms" class=" me-2">Stanze</label>
-					<input type="number" class="form-control my-input me-2" name="rooms" min="0"  id="rooms" v-model="rooms">
+					<input type="number" class="form-control my-input me-2" name="rooms" id="rooms" v-model="rooms" min="0">
 				
 					<label for="beds" class="me-2">Letti</label>
-					<input type="number" class="form-control  my-input me-2" name="beds" id="beds" v-model="beds">
+					<input type="number" class="form-control  my-input me-2" name="beds" id="beds" v-model="beds" min="0">
 				
 				
 					<label for="toilets" class="me-2">Bagni</label>
-					<input type="number" class="form-control my-input me-2" name="toilets" id="toilets" v-model="toilets">
+					<input type="number" class="form-control my-input me-2" name="toilets" id="toilets" v-model="toilets" min="0">
 				
 			</div>
 			<div class="col-12 col-sm-12 col-lg-2  justify-self-end pe-0 mt-2">
 				<button type="submit" @click="search" class="btn btn-warning w-100">Cerca</button>
+			</div>
+			<div class="col-12 col-sm-12 col-lg-2  justify-self-end pe-0 mt-2">
+				<button type="submit" @click="resetFilter" class="btn btn-danger w-100">Reset Filtri</button>
 			</div>
 
 		</div>
