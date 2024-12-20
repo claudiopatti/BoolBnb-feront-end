@@ -148,7 +148,7 @@ methods: {
 						lat,
 						lon,
 						apartment.latitude,
-						apartment.longitude
+						apartment.longitude,
 					)
 					: 0; // Nessuna distanza se lat e lon sono null
 				return { ...apartment, distance };
