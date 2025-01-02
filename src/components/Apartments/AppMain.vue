@@ -11,7 +11,7 @@ export default {
 		suggestions: [],
 		apiKey: 'KtAYjlAUfMLakTMNV7iootfwwERDicp1', // Inserisci la tua API Key qui
 		apartments: [],
-		radius: this.$route.query.radius || 20, // Raggio predefinito a 10 km
+		radius: this.$route.query.radius || 20, // Raggio predefinito a 20 km
 		filteredApartments: [],
 	// 	services: [
     //     { service_name: "Service 1", checked: false },
@@ -112,6 +112,7 @@ methods: {
 
 	// Filtra gli appartamenti in base alla distanza
     filterApartments() {
+
 		if (this.searchQuery) {
 			const url = `https://api.tomtom.com/search/2/geocode/${encodeURIComponent(
 				this.searchQuery
@@ -269,6 +270,10 @@ methods: {
 					query: { radius: this.radius },
 				});
 				this.filterApartments();
+				console.log('services', this.myFilterServices);
+				console.log('apartments',this.filteredApartments);
+
+				
 			} else {
 				console.log("Inserisci almeno un filtro per cercare.");
 			}
@@ -367,16 +372,18 @@ methods: {
 					<input type="number" class="form-control my-input me-2" name="toilets" id="toilets" v-model="toilets" min="0">
 				
 			</div>
-			<div class="col-12 col-sm-12 col-lg-2  justify-self-end pe-0 mt-2">
+
+			<div class="col-12 col-sm-12 col-lg-2  justify-self-end pe-3 mt-2">
 				<button type="submit" @click="search" class="btn btn-warning w-100">Cerca</button>
 			</div>
-			<div class="col-12 col-sm-12 col-lg-2  justify-self-end pe-0 mt-2">
+
+			<div class="col-12 col-sm-12 col-lg-2  justify-self-end pe-3 mt-2 ">
 				<button type="submit" @click="resetFilter" class="btn btn-danger w-100">Reset Filtri</button>
 			</div>
 
 		</div>
 		<div class="row ">
-			<div class="my-2 me-3 mb-5 ">
+			<div class="my-2 me-3 mb-5 pe-3">
 			<input
 			v-model="searchQuery"
 			@input="fetchSuggestions"
@@ -401,8 +408,8 @@ methods: {
 
   	</div>
 	  <!-- <div> {{ apartments }} </div> -->
-
-		<div v-if="filteredApartments.length">
+	  
+	  <div v-if="filteredApartments.length">
 			<div class="container">
 				<h3 class="mb-4">Appartamenti trovati entro {{ radius }} km:</h3>
 
@@ -449,10 +456,18 @@ methods: {
 					</div>
 				</div>
 			</div>
-		
+			
 		</div>
 		
-		<div v-else-if=" filteredApartments == [] && myFilterServices.length || rooms != 0 || beds != 0 || toilets != 0 ">
+		<div v-else-if="myFilterServices.length && !filteredApartments.length">
+			
+			<div class="container">
+				<h3>Nessun Appartamento trovato</h3>
+			</div>
+  
+		</div>
+		
+		<div v-else-if="myFilterServices.length && filteredApartments == [] || rooms != 0 || beds != 0 || toilets != 0 ">
 			
 			<div class="container">
 				<h3>Nessun Appartamento trovato</h3>
@@ -460,7 +475,7 @@ methods: {
 
 		</div>
 
-		<div v-else-if="apartments.length && searchQuery == '' ">
+		<div v-else-if="apartments.length && searchQuery == '' && !myFilterServices.length">
 			
 			<div class="container">
 
