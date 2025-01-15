@@ -467,7 +467,7 @@ methods: {
   
 		</div>
 		
-		<div v-else-if="myFilterServices.length && filteredApartments == [] || rooms != 0 || beds != 0 || toilets != 0 ">
+		<div v-else-if="myFilterServices.length && filteredApartments == [] || radius >= 0 || rooms >= 0 || beds >= 0 || toilets >= 0 ">
 			
 			<div class="container">
 				<h3>Nessun Appartamento trovato</h3>
