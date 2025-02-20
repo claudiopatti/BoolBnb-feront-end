@@ -459,15 +459,31 @@ methods: {
 			
 		</div>
 		
-		<div v-else-if="myFilterServices.length && !filteredApartments.length">
+		<!-- <div v-else-if="myFilterServices.length && !filteredApartments.length">
 			
 			<div class="container">
 				<h3>Nessun Appartamento trovato</h3>
 			</div>
   
-		</div>
-		
-		<div v-else-if="myFilterServices.length && filteredApartments == [] || radius >= 0 || rooms >= 0 || beds >= 0 || toilets >= 0 ">
+		</div> -->
+<!-- 
+		<div v-else-if="myFilterServices.length && !filteredApartments == [] || rooms != 0 || beds != 0 || toilets != 0 ">
+			
+			<div class="container">
+				<h3>Nessun Appartamento trovato</h3>
+			</div>
+
+		</div> -->
+
+		<!-- <div v-else-if="myFilterServices.length && filteredApartments == [] || radius >= 0 || rooms >= 0 || beds >= 0 || toilets >= 0 ">
+			
+			<div class="container">
+				<h3>Nessun Appartamento trovato</h3>
+			</div>
+
+		</div> -->
+
+		<div v-else-if="myFilterServices.length && !filteredApartments.length && rooms >= 0 && beds >= 0 && toilets >= 0 && radius >= 0">
 			
 			<div class="container">
 				<h3>Nessun Appartamento trovato</h3>
@@ -475,7 +491,7 @@ methods: {
 
 		</div>
 
-		<div v-else-if="apartments.length && searchQuery == '' && !myFilterServices.length">
+		<div v-else-if="apartments.length && searchQuery == '' && !myFilterServices.length && radius >= 0 && rooms >= 0 && beds >= 0 && toilets >= 0 ">
 			
 			<div class="container">
 
@@ -531,8 +547,61 @@ methods: {
 
 		</div>
 
+		<div v-else-if="apartments.length && searchQuery == '' && myFilterServices.length &&  radius >= 0 && rooms >= 0 && beds >= 0 && toilets >= 0 ">
+			
+			<div class="container">
 
-		
+				<div class="row">
+					
+					<div  v-for="apartment in apartments" :key="apartment.id" class="col-12 col-sm-6 col-md-6 col-lg-4 mb-3">
+
+						<router-link :to="{ name: 'apartment-show' , params: { slug: apartment.slug }}" class="apartment-card-link text-dark">
+							<div class="my-card p-3">
+									<div class="text-center my-img-container mb-2">
+										<img :src=" apartment.full_image_url " class="img-fluid my-img mb-2" :alt=" apartment.title ">
+									</div>
+									<h4 class="fw-bold mb-1">
+										{{ apartment.title }} 
+									</h4>
+									<strong class="mb-1">
+										{{ apartment.address }} 
+									</strong>
+									<div class="d-flex align-items-center justify-content-start text-start mb-1">
+										<div>
+											<!-- <span class="me-2">Stanze </span> -->
+											<i class="fa-solid fa-door-closed my-icon me-2"></i>
+											<strong class="fs-5 me-3">{{ apartment.rooms }}</strong>
+										</div>
+										<div>
+											<!-- <span class="me-2">Letti </span> -->
+											<i class="fa-solid fa-bed my-icon me-2"></i>
+											<strong class="fs-5 me-3">{{ apartment.beds }}</strong>
+										</div>
+										<div>
+											<!-- <span class="me-2">Bagni </span> -->
+											<i class="fa-solid fa-toilet my-icon me-2"></i>
+											<strong class="fs-5 me-3">{{ apartment.toilets }}</strong>
+										</div>
+									</div>
+									<div class="text-start h-100">
+										<ul class="p-0 d-flex flex-wrap">
+											<li v-for="service, index in apartment.services" :key="index" class="fw-bold text-secondary me-3 p-0 my-lable">
+												{{ service.service_name }}
+											</li>
+										</ul>
+									</div>
+									
+							</div>
+						</router-link>
+					
+					
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
 
 		<div v-else>
 			
